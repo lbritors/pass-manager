@@ -16,10 +16,6 @@ export class UsersService {
     return await this.repository.create({...createUserDto, password: hashedPass})
   }
 
-  findAll() {
-    return `This action returns all users`;
-  }
-
   async findUserByEmail(email: string) {
     return await this.repository.findUserByEmail(email);
   }

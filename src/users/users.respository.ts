@@ -20,10 +20,6 @@ export class UsersRepository {
     })
   }
 
-  findAll() {
-    return `This action returns all users`;
-  }
-
   findOne(id: number) {
     return this.prisma.user.findFirst({
       where: {
