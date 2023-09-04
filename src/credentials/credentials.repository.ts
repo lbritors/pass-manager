@@ -8,16 +8,26 @@ export class CredentialsRepository {
 
   constructor(private readonly prisma: PrismaService) {}
   create(userPrisma: User, createCredentialDto: CreateCredentialDto) {
+    const { title, password, userLogin, url } = createCredentialDto;
     return this.prisma.credential.create({
-      data: createCredentialDto,
-      user: {
-        connect: userPrisma
+      data: {
+        title,
+        password,
+        userLogin,
+        url,
+        user: {
+          connect: userPrisma
+        }
       }
     })
   }
 
-  findAll() {
-    return `This action returns all credentials`;
+  findAll(user: User) {
+    return this.prisma.credential.findMany({
+      where: {
+        user: user
+      }
+    });
   }
 
   findByTitle(title: string) {
@@ -28,11 +38,21 @@ export class CredentialsRepository {
     })
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} credential`;
+  findOne(id: number, user: User) {
+    return this.prisma.credential.findFirst({
+      where: {
+        id,
+        userId: user.id
+      }
+    })
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} credential`;
+  remove(user: User, id: number) {
+    return this.prisma.credential.delete({
+      where: {
+        id,
+        user: user
+      }
+    })
   }
 }

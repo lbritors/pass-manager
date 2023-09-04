@@ -1,13 +1,14 @@
 import { IsEmail } from 'class-validator';
 import { SignUpDto } from './dtos/signup.dto';
-import { Inject, Injectable, UnauthorizedException, forwardRef } from '@nestjs/common';
+import { Injectable, UnauthorizedException, forwardRef } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
 import { Jwt } from 'jsonwebtoken';
 import * as bcrypt from "bcrypt";
 import { SignInDto } from './dtos/signin.dto';
 import { User } from '@prisma/client';
 import { JwtService } from '@nestjs/jwt';
-let jwt = require('jsonwebtoken');
+import { ConfigService } from '@nestjs/config';
+
 @Injectable()
 export class AuthService {
   private EXPIRATION_TIME = "7 days";
@@ -15,8 +16,9 @@ export class AuthService {
   private AUDIENCE = "users";
 
   constructor(
-    @Inject(forwardRef(() => UsersService))
-    private readonly userService: UsersService) { }
+    private readonly jwtService: JwtService,
+    private readonly userService: UsersService
+    ) { }
 
   async signUp(SignUpDto: SignUpDto) {
     return await this.userService.create(SignUpDto);
@@ -32,22 +34,29 @@ export class AuthService {
     return this.createToken(user);
   }
 
-  createToken(user: User) {
+  async createToken(user: User) {
     const { id } = user;
-    const token = jwt.sign({ data: id }, process.env.JWT_SECRET, {
-      expiresIn: this.EXPIRATION_TIME
-    }, { audience: this.AUDIENCE }, { issuer: this.ISSUER });
-
-    return { token };
-  }
-
-  verifyToken(token: string) {
-    const data = jwt.verify(token, {
+    const token = this.jwtService.sign({ id },  {
+      expiresIn: this.EXPIRATION_TIME,
       audience: this.AUDIENCE,
       issuer: this.ISSUER
     });
 
-    return data;
+    return await this.userService.createLogin(user, token);
+  }
+
+  verifyToken(token: string) {
+    const split = token.split("Bearer ")[1];
+    try {
+      const data = this.jwtService.verify(split, {
+        audience: this.AUDIENCE,
+        issuer: this.ISSUER
+      });
+      return data;
+    } catch (error) {
+      console.log(error.message);
+    }
+
   }
 
 }
