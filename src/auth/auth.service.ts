@@ -15,13 +15,14 @@ export class AuthService {
   private AUDIENCE = "users";
 
   constructor(
+    @Inject(forwardRef(() => UsersService))
     private readonly userService: UsersService) { }
 
   async signUp(SignUpDto: SignUpDto) {
     return await this.userService.create(SignUpDto);
   }
 
-  async singIn(SignInDto: SignInDto) {
+  async signIn(SignInDto: SignInDto) {
     const { email, password } = SignInDto;
     const user = await this.userService.findUserByEmail(email);
     if (!user) throw new UnauthorizedException("Email or password not valid!");
