@@ -18,6 +18,13 @@ model User {
   @@map("users")
 }
 
+model Section {
+  id Int @id @default(autoincrement())
+  token String
+
+  @@map("sections")
+}
+
 model Credential {
   id Int @id @default(autoincrement())
   title String @unique

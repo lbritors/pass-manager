@@ -23,8 +23,8 @@ export class UsersService {
   async findUserByEmail(email: string) {
     return await this.repository.findUserByEmail(email);
   }
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: number) {
+    return await this.repository.findOne(id);
   }
 
   remove(id: number) {
