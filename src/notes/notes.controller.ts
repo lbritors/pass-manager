@@ -21,7 +21,7 @@ export class NotesController {
     return this.notesService.findAll(user);
   }
 
-  @Get()
+  @Get(':id')
   findOne(@Param('id') id: string, @User() user: UserPrisma) {
     return this.notesService.findOne(+id, user);
   }

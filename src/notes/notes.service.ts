@@ -19,6 +19,8 @@ async  create(createNoteDto: CreateNoteDto, user: User) {
     const note = await this.repository.findAll(user);
     if (!note) throw new NotFoundException();
     if (!user) throw new ForbiddenException();
+
+    return note;
   }
 
 async  findOne(id: number, user: User) {

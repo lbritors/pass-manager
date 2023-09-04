@@ -17,6 +17,7 @@ model User {
   Credential Credential[]
   Section Section[]
   Note Note[]
+  Card Card[]
   @@map("users")
 }
 
@@ -52,13 +53,17 @@ model Note {
 
 model Card {
   id Int @id @default(autoincrement())
+  title String @unique
   owner String
   number String
-  cvc Int
+  cv Int
   virtual Boolean
   expiration String
   password String
   type String
+  userId Int
+  user User @relation(fields: [userId], references: [id])
+  
 
   @@map("cards") 
 }
