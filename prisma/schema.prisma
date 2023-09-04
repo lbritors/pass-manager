@@ -14,13 +14,16 @@ model User {
   id Int @id @default(autoincrement())
   email String @unique
   password String
-
+  Credential Credential[]
+  Section Section[]
   @@map("users")
 }
 
 model Section {
   id Int @id @default(autoincrement())
   token String
+  userId Int
+  user User @relation(fields: [userId], references: [id])
 
   @@map("sections")
 }
@@ -28,8 +31,11 @@ model Section {
 model Credential {
   id Int @id @default(autoincrement())
   title String @unique
+  userLogin String
   url String
   password String
+  userId Int
+  user User @relation(fields: [userId], references: [id])
 
   @@map("credentials")
 }
