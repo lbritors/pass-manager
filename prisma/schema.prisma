@@ -16,6 +16,7 @@ model User {
   password String
   Credential Credential[]
   Section Section[]
+  Note Note[]
   @@map("users")
 }
 
@@ -43,6 +44,8 @@ model Note {
   id Int @id @default(autoincrement())
   title String @unique
   text String
+  userId Int
+  user User @relation(fields: [userId], references: [id])
 
   @@map("notes")
 }
