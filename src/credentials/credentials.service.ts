@@ -27,7 +27,6 @@ export class CredentialsService {
  async create(user: User, createCredentialDto: CreateCredentialDto) {
     const { password, title } = createCredentialDto;
    const hashed = this.cryptr.encrypt(password);
-   console.log(hashed);
    const name = await this.repository.findByTitle(title);
    if (name) throw new ConflictException();
 

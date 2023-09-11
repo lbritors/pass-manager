@@ -20,10 +20,11 @@ export class NotesRepository {
       })
   }
 
-  findByTitle(title: string) {
+  findByTitle(title: string, user: User) {
     return this.prisma.note.findFirst({
       where: {
-        title
+        title,
+        user
       }
     })
   }

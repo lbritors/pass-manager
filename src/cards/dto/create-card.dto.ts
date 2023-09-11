@@ -1,6 +1,10 @@
-import { IsBoolean, IsNotEmpty, IsString } from "class-validator";
+import { IsBoolean, IsNotEmpty, IsPositive, IsString } from "class-validator";
 
 export class CreateCardDto {
+  @IsString()
+  @IsNotEmpty()
+  title: string;
+
   @IsString()
   owner: string;
   
@@ -9,8 +13,11 @@ export class CreateCardDto {
   @IsNotEmpty()
   number: string;
   
+  @IsPositive()
+  cv: number
+
   @IsString()
-  cv: string
+  expiration: string;
 
   @IsBoolean()
   virtual: boolean;

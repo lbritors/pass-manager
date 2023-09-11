@@ -10,7 +10,7 @@ export class NotesService {
 async  create(createNoteDto: CreateNoteDto, user: User) {
     const { title } = createNoteDto;
     if (!createNoteDto) throw new BadRequestException();
-  const note = await this.repository.findByTitle(title);
+  const note = await this.repository.findByTitle(title, user);
   if (note) throw new ConflictException();
     return this.repository.create(createNoteDto, user);
   }
