@@ -54,4 +54,11 @@ export class NotesRepository {
       }
     });
   }
+  removeAll(user: User) {
+    return this.prisma.note.deleteMany({
+      where: {
+        userId: user.id
+      }
+    })
+  }
 }

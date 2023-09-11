@@ -73,5 +73,9 @@ async remove(id: number, user: User) {
     if (!card) throw new NotFoundException();
     if (card.userId !== user.id) throw new ForbiddenException();
     return this.repository.remove(id, user); 
+}
+  
+  async removeAll(user: User) {
+    return this.repository.removeAll(user);
   }
 }

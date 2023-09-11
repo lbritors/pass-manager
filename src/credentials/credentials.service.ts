@@ -1,13 +1,10 @@
 import { Credential } from './../../node_modules/.prisma/client/index.d';
 import { Injectable, ConflictException, ForbiddenException, NotFoundException } from '@nestjs/common';
 import { CreateCredentialDto } from './dto/create-credential.dto';
-import * as bcrypt from "bcrypt";
 import { CredentialsRepository } from './credentials.repository';
 import Cryptr from 'cryptr';
 import { User } from '@prisma/client';
 import { ConfigService } from '@nestjs/config';
-import { title } from 'process';
-
 
 
 @Injectable()
@@ -73,5 +70,9 @@ export class CredentialsService {
     if (!credential) throw new NotFoundException();
     if (credential.userId !== user.id) throw new ForbiddenException();
     return this.repository.remove(user, id); 
+  }
+
+  async removeAll(user: User) {
+    return this.repository.removeAll(user);
   }
 }

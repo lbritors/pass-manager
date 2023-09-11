@@ -35,6 +35,10 @@ async  findOne(id: number, user: User) {
     if (!note) throw new NotFoundException();
     if (!user) throw new ForbiddenException();
    return await this.repository.remove(id, user);
+ }
+  
+  async removeAll(user: User) {
+    return this.repository.removeAll(user);
   }
 }
 
